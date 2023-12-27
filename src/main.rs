@@ -11,9 +11,9 @@ use crate::server::Server;
 use clap::{App, Arg};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let matches = App::new("Remote Clipboard Sync")
+    let matches = App::new("RClip")
         .version("1.0")
-        .author("Your Name <your_email@example.com>")
+        .author("Luis Fernando Miranda <luisfmiranda8@gmail.com>")
         .about("Synchronizes clipboard contents between a remote server and a local machine.")
         .arg(
             Arg::with_name("role")
