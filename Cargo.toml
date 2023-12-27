@@ -1,0 +1,12 @@
+[package]
+name = "r_clip"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clipboard = "0.5.0"
+
+[target.x86_64-unknown-linux-gnu]
+openssl = { version = "0.9.88", features = ["vendored"] }
