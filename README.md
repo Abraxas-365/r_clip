@@ -38,6 +38,12 @@ The executable will be available under target/release/.
 
 ### On the Server
 
+you can acces the help meny by:
+
+```sh
+./r_clip --help
+```
+
 Start the server component on your remote machine:
 
 ```sh
