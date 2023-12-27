@@ -38,14 +38,13 @@ impl Server {
                 fs::read_to_string(&self.clipboard_file).unwrap_or_else(|_| String::new());
 
             if !current_clip.is_empty() && current_clip != last_clip {
-                last_clip = current_clip.clone();
                 if let Err(e) = stream.write_all(current_clip.as_bytes()) {
                     println!("Failed to send data: {}", e);
                     thread::sleep(Duration::from_secs(1));
+                } else {
+                    last_clip = current_clip;
+                    fs::write(&self.clipboard_file, "").expect("Failed to clear clipboard file");
                 }
-
-                fs::write(&self.clipboard_file, "").expect("Failed to clear clipboard file");
-                last_clip.clear();
             }
             thread::sleep(Duration::from_millis(100));
         }
