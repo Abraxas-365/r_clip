@@ -1,10 +1,17 @@
-[package]
-name = "r_clip"
-version = "0.1.0"
+[workspace]
+members = ["xtask/", "crates/*"]
+resolver = "2"
+
+[workspace.package]
 edition = "2021"
+license = "MIT"
+authors = ["Guzmán Monné"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.dev]
+# Disabling debug info speeds up builds.
+debug = 0
 
-[dependencies]
-clipboard = "0.5.0"
-clap = "3.0"
+[profile.release]
+incremental = true
+# Set this to 1 or 2 to get more useful backtraces in debugger.
+debug = 0
