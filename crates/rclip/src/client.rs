@@ -34,7 +34,7 @@ impl Client {
 
     pub fn run(&self) -> io::Result<()> {
         let mut stream = self.connect()?;
-        println!("Successfully connected to the server");
+        log::info!("Connected to server on {}", stream.peer_addr()?);
         stream.write_all(b"Hello, server!")?;
 
         let mut buffer = [0; 1024];
@@ -45,18 +45,18 @@ impl Client {
             match stream.read(&mut buffer) {
                 Ok(size) => {
                     if size == 0 {
-                        println!("Server closed the connection. Exiting.");
+                        log::info!("Server closed the connection. Exiting.");
                         break;
                     }
                     let message = String::from_utf8_lossy(&buffer[..size]);
-                    println!("Received from server: {}", message);
+                    log::debug!("Received from server: {}", message);
 
                     let _ = clipboard_listener.set_clipboard(&message);
 
                     thread::sleep(Duration::from_secs(1));
                 }
                 Err(e) => {
-                    eprintln!("Failed to receive data: {}", e);
+                    log::error!("Failed to receive data: {}", e);
                     //TODO: handle the error, with a retray or something
                     thread::sleep(Duration::from_secs(1));
                 }

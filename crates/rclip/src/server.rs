@@ -38,9 +38,9 @@ impl Server {
                 fs::read_to_string(&self.clipboard_file).unwrap_or_else(|_| String::new());
 
             if !current_clip.is_empty() {
-                println!("Sending clipboard contents to client {}", current_clip);
+                log::debug!("Sending clipboard contents to client: {}", current_clip);
                 if let Err(e) = stream.write_all(current_clip.as_bytes()) {
-                    println!("Failed to send data: {}", e);
+                    log::error!("Failed to send clipboard contents to client: {}", e);
                     thread::sleep(Duration::from_secs(1));
                 }
                 fs::write(&self.clipboard_file, "").expect("Failed to clear clipboard file");
@@ -52,17 +52,17 @@ impl Server {
     pub fn run(&self) -> io::Result<()> {
         let listener = self.listen()?;
 
-        println!("Server listening on {}:{}", self.address, self.port);
+        log::info!("Server listening on {}", listener.local_addr()?);
 
         for stream in listener.incoming() {
             match stream {
                 Ok(stream) => {
-                    println!("New connection: {}", stream.peer_addr()?);
+                    log::debug!("New connection: {}", stream.peer_addr()?);
                     let server_clone = self.clone();
                     thread::spawn(move || server_clone.handle_client(stream));
                 }
                 Err(e) => {
-                    eprintln!("Error: {}", e);
+                    log::error!("Error: {}", e);
                 }
             }
         }
