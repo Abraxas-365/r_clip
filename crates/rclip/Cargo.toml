@@ -1,0 +1,20 @@
+[package]
+name = "rclip"
+version = "0.1.0"
+autobins = false
+
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "rclip"
+path = "src/main.rs"
+
+
+[dependencies]
+clipboard = "0.5.0"
+clap = { version = "4.4.11", features = ["derive", "string"] }
+color-eyre = "0.6.2"
+env_logger = "0.10.1"
+log = "0.4.20"
