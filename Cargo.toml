@@ -5,7 +5,7 @@ resolver = "2"
 [workspace.package]
 edition = "2021"
 license = "MIT"
-authors = ["Guzmán Monné"]
+authors = ["Luis Fernando Miranda","Guzmán Monné"]
 
 [profile.dev]
 # Disabling debug info speeds up builds.
