@@ -1,9 +1,7 @@
 use std::io::{self, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
-use std::thread;
 use std::time::Duration;
-
-use crate::clipboard_listener::ClipboardListener;
+use std::{fs, thread};
 
 use self::errors::ServerError;
 pub mod errors;
@@ -12,15 +10,17 @@ pub mod errors;
 pub struct Server {
     address: String,
     port: u16,
+    clipboard_file: String,
 }
 
 impl Server {
-    pub fn new(address: &str, port: u16) -> Result<Self, ServerError> {
+    pub fn new(address: &str, port: u16, clipboard_file: &str) -> Result<Self, ServerError> {
         let full_address = format!("{}:{}", address, port);
         if full_address.to_socket_addrs().is_ok() {
             Ok(Server {
                 address: address.to_string(),
                 port,
+                clipboard_file: clipboard_file.to_string(),
             })
         } else {
             Err(ServerError::new("Invalid address"))
@@ -32,13 +32,14 @@ impl Server {
     }
 
     fn handle_client(&self, mut stream: TcpStream) {
-        let mut rclip = ClipboardListener::new()
-            .map_err(|e| println!("{}", e))
-            .expect("Failed to create clipboard listener");
+        let mut last_clip = String::new();
         loop {
-            if rclip.have_new_clip() {
-                let message = rclip.get_new_clip().unwrap_or(String::new());
-                if let Err(e) = stream.write_all(message.as_bytes()) {
+            let current_clip =
+                fs::read_to_string(&self.clipboard_file).unwrap_or_else(|_| String::new());
+
+            if current_clip != last_clip {
+                last_clip = current_clip.clone();
+                if let Err(e) = stream.write_all(current_clip.as_bytes()) {
                     println!("Failed to send data: {}", e);
                     thread::sleep(Duration::from_secs(1));
                 }

@@ -13,8 +13,8 @@ use crate::server::Server;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() != 4 {
-        eprintln!("Usage: program [server|client] <address> <port>");
+    if args.len() != 5 {
+        eprintln!("Usage: program [server|client] <address> <port> [clipboard_file]");
         process::exit(1);
     }
 
@@ -24,7 +24,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match role.as_str() {
         "server" => {
-            let server = Server::new(address, port)
+            let clipboard_file = &args[4];
+            let server = Server::new(address, port, clipboard_file)
                 .expect("Failed to create server with given address and port");
             server.run()?;
         }
