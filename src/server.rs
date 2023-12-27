@@ -32,7 +32,9 @@ impl Server {
     }
 
     fn handle_client(&self, mut stream: TcpStream) {
-        let mut rclip = ClipboardListener::new().expect("Failed to create clipboard listener");
+        let mut rclip = ClipboardListener::new()
+            .map_err(|e| println!("{}", e))
+            .expect("Failed to create clipboard listener");
         loop {
             if rclip.have_new_clip() {
                 let message = rclip.get_new_clip().unwrap_or(String::new());
