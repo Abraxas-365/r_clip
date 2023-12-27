@@ -20,7 +20,7 @@ Network connectivity between the local machine and the remote server.
 1. Clone the Repository:
 
 ```sh
-git clone https://github.com/your-username/remote-clipboard-sync.git
+git clone https://github.com/Abraxas-365/r_clip
 cd remote-clipboard-sync
 ```
 
