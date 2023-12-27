@@ -47,7 +47,13 @@ you can acces the help meny by:
 Start the server component on your remote machine:
 
 ```sh
-./r_clip server <server-address> <port>
+./r_clip server <server-address> <port> <filepath-for-the-pseado-clipboard>
+```
+
+- example
+
+```sh
+./r_clip  server 0.0.0.0 12345 ~/yankfile.txt
 ```
 
 Replace <server-address> with the server's IP address or hostname and <port> with the port number you want to use.
