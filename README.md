@@ -53,3 +53,37 @@ Connect the client component to your server:
 ```sh
 ./r_clip client <server-address> <port>
 ```
+
+## Setting Up Neovim and Vim for Remote Clipboard Sync
+
+Neovim/Vim Configuration
+To enable clipboard synchronization with Neovim or Vim, you need to configure an autocommand to write the yanked text to a file. This file will be monitored by the Remote Clipboard Sync tool on the server.
+
+1. Configure Neovim/Vim:
+   Open your init.vim/init.lua file for Neovim or .vimrc file for Vim and add the following lines:
+
+```vim
+" Autocommand that triggers when text is yanked
+augroup YankToFile
+  autocmd!
+  autocmd TextYankPost * call writefile([@0], '/path/to/your/yankfile.txt')
+augroup END
+```
+
+Replace /path/to/your/yankfile.txt with the actual path to the file that Remote Clipboard Sync will monitor.
+
+- Example
+
+```vim
+" Autocommand that triggers when text is yanked
+augroup YankToFile
+  autocmd!
+  autocmd TextYankPost * call writefile([@0], '/home/ubuntu/yankfile.txt')
+augroup END
+```
+
+2. Ensure File Accessibility:
+   Make sure that the file specified in clipboard_file is accessible and writable by both Neovim/Vim and the Remote Clipboard Sync tool.
+
+Using with Remote Clipboard Sync
+Once you have configured Neovim/Vim as described above, any text yanked (copied) in Neovim/Vim will be written to the specified file. The Remote Clipboard Sync tool running on your server will monitor this file and synchronize the clipboard contents accordingly.
