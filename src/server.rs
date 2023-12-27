@@ -32,17 +32,13 @@ impl Server {
     }
 
     fn handle_client(&self, mut stream: TcpStream) {
-        let mut last_clip = String::new();
         loop {
             let current_clip =
                 fs::read_to_string(&self.clipboard_file).unwrap_or_else(|_| String::new());
 
-            if current_clip != last_clip {
-                last_clip = current_clip.clone();
-                if let Err(e) = stream.write_all(current_clip.as_bytes()) {
-                    println!("Failed to send data: {}", e);
-                    thread::sleep(Duration::from_secs(1));
-                }
+            if let Err(e) = stream.write_all(current_clip.as_bytes()) {
+                println!("Failed to send data: {}", e);
+                thread::sleep(Duration::from_secs(1));
             }
             thread::sleep(Duration::from_millis(100));
         }
