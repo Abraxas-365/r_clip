@@ -33,7 +33,8 @@ impl ClipboardListener {
     }
 
     pub fn set_clipboard(&mut self, contents: &str) -> Result<(), Box<dyn std::error::Error>> {
-        self.ctx.set_contents(contents.to_owned())?;
+        let modified_contents = contents.replace("\x00", "\n");
+        self.ctx.set_contents(modified_contents.to_owned())?;
         Ok(())
     }
 }
