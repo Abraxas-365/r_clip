@@ -47,13 +47,13 @@ you can acces the help meny by:
 Start the server component on your remote machine:
 
 ```sh
-./r_clip server <server-address> <port> <filepath-for-the-pseado-clipboard>
+./r_clip -r server -a <server-address> -p <port> -c <filepath-for-the-pseado-clipboard>
 ```
 
 - example
 
 ```sh
-./r_clip  server 0.0.0.0 12345 ~/yankfile.txt
+./r_clip  rclip -r server -a 0.0.0.0 -p 12345 -c ~/yankfile.txt
 ```
 
 Replace <server-address> with the server's IP address or hostname and <port> with the port number you want to use.
@@ -63,7 +63,7 @@ Replace <server-address> with the server's IP address or hostname and <port> wit
 Connect the client component to your server:
 
 ```sh
-./r_clip client <server-address> <port>
+./r_clip client -a <server-address> -p <port>
 ```
 
 ## Setting Up Neovim and Vim for Remote Clipboard Sync
