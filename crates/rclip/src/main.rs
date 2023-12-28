@@ -31,6 +31,10 @@ pub struct Cli {
     /// The path to the clipboard file (only required for server)
     #[arg(short, long)]
     clipboard_file: Option<String>,
+
+    /// The password to use for the server
+    #[arg(short, long)]
+    password: Option<String>,
 }
 
 use crate::client::Client;
@@ -46,12 +50,13 @@ fn main() -> Result<()> {
                 cli.port,
                 &cli.clipboard_file
                     .expect("A clipboard file should be provided in server mode"),
+                cli.password,
             )
             .expect("Failed to create server with given address and port");
             server.run()?;
         }
         Role::Client => {
-            let client = Client::new(&cli.address, cli.port)
+            let client = Client::new(&cli.address, cli.port, cli.password)
                 .expect("Failed to create client with given server address and port");
             client.run()?;
         }
